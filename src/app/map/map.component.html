@@ -1,0 +1,62 @@
+<div
+  id="map"
+  class="h-screen"
+></div>
+
+@if (isStoryModalOpen) {
+  <add-story
+    [coordinates]="coordinates"
+    (onStoryCreated)="onStoryCreated()"
+    (onClose)="isStoryModalOpen = false"
+  />
+}
+
+@if (isSliderOpen) {
+  <div class="grid place-items-center fixed inset-0 bg-black bg-opacity-45 rounded-lg overflow-hidden"
+       (click)="isSliderOpen = false">
+    <div
+      (click)="$event.stopImmediatePropagation()"
+      class="w-[600px] h-[600px] bg-white rounded-lg relative">
+      <owl-carousel-o [options]="thumbsCarouselOption" #carouselComponent>
+        @for (imgUrl of selectedStories; track imgUrl; let i = $index) {
+          <ng-template carouselSlide id="{{ imgUrl?.url }}">
+            <img class="w-full h-full object-contain rounded-lg" [src]="environment.host + imgUrl?.url" [alt]="">
+          </ng-template>
+        }
+      </owl-carousel-o>
+
+      <div class="flex items-center justify-between absolute top-[50%] left-0 w-full z-10 px-4">
+        <div class="w-12 h-12 grid place-items-center rounded-full cursor-pointer bg-white" (click)="navigateCarousel('prev')">
+          <svg class="w-3" id="arrow-left" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M8.84687 15.5102C8.43854 15.9185 7.78021 15.9185 7.37187 15.5102L0.446875 8.58516C0.121875 8.26016 0.121875 7.73516 0.446875 7.41016L7.37187 0.485155C7.78021 0.0768213 8.43854 0.0768213 8.84687 0.485155C9.25521 0.893488 9.25521 1.55182 8.84687 1.96016L2.81354 8.00182L8.85521 14.0435C9.25521 14.4435 9.25521 15.1102 8.84687 15.5102Z"
+              fill="#000000"/>
+          </svg>
+        </div>
+
+        <div class="w-12 h-12 grid place-items-center rounded-full cursor-pointer bg-white" (click)="navigateCarousel('next')">
+          <svg class="w-3" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+            <path
+              d="M1.15313 0.489843C1.56146 0.0815097 2.21979 0.0815097 2.62813 0.489843L9.55312 7.41484C9.87812 7.73984 9.87812 8.26484 9.55312 8.58984L2.62812 15.5148C2.21979 15.9232 1.56146 15.9232 1.15312 15.5148C0.744791 15.1065 0.744791 14.4482 1.15312 14.0398L7.18646 7.99818L1.14479 1.95651C0.744794 1.55651 0.744792 0.889843 1.15313 0.489843Z"
+              fill="#000000"/>
+          </svg>
+        </div>
+      </div>
+
+      <div
+        (click)="addHistory()"
+        class="flex items-center gap-3 absolute top-2 right-2 z-10 rounded-lg bg-white px-4 py-3 shadow-lg cursor-pointer hover:bg-gray-50">
+        <svg class="w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="7.625" stroke="currentColor" stroke-width="0.75"/>
+          <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M7.88889 4C7.70479 4 7.55556 4.14924 7.55556 4.33333V7.55556H4.33333C4.14924 7.55556 4 7.70479 4 7.88889C4 8.07298 4.14924 8.22222 4.33333 8.22222H7.55556V11.6667C7.55556 11.8508 7.70479 12 7.88889 12C8.07298 12 8.22222 11.8508 8.22222 11.6667V8.22222H11.6667C11.8508 8.22222 12 8.07298 12 7.88889C12 7.70479 11.8508 7.55556 11.6667 7.55556H8.22222V4.33333C8.22222 4.14924 8.07298 4 7.88889 4Z"
+                fill="#000000"/>
+        </svg>
+
+        <span class="font-medium">Hikoya qo'shish</span>
+      </div>
+    </div>
+  </div>
+}
+
